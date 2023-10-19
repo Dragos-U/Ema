@@ -19,8 +19,7 @@ The project uses :
 	
 	Make sure that you have (if not -> create) the following file : main/resources/application.properties   
 	This file shall contain the DB credentials and the keys for  SendGrid API (see https://sendgrid.com/ )   
-		
-	'''java
+
 	spring.datasource.url = jdbc:postgresql://localhost:5432/YOURDATABASE
 	spring.datasource.username=YOUR_USERNAME
 	spring.datasource.password=YOUR_PASSWORD
@@ -29,4 +28,3 @@ The project uses :
 	
     app.sendgrid.key=YOUR_KEY 
     app.sendgrid.templateId=YOUR_KEY
-	'''
