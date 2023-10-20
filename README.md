@@ -1,9 +1,9 @@
 # Ema
 Event Management System
 
-Our project helps local communities to organize events throughout the year such as: workshops, seminars, social gatherings, parties and so on. 
+Our project helps local communities to organize events throughout the year such as: workshops, seminars, social gatherings, parties and so on. It allows event attendees to filter events and register.
 
-The project uses :
+The project uses:
 > Java 17  
 > SpringBoot 3.1.4  
 > PostgreSQL  
@@ -17,8 +17,8 @@ The project uses :
 
 	! Important !  
 	
-	Make sure that you have (if not -> create) the following file : main/resources/application.properties   
-	This file shall contain the DB credentials and the keys for  SendGrid API (see https://sendgrid.com/ )   
+	Make sure that you have (if not -> create) the following file: main/resources/application.properties   
+	This file shall contain the DB credentials and the keys for  SendGrid API (see https://sendgrid.com/)   
 
 	spring.datasource.url = jdbc:postgresql://localhost:5432/YOURDATABASE
 	spring.datasource.username=YOUR_USERNAME
