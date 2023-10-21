@@ -4,6 +4,7 @@ Event Management System
 Our project helps local communities to organize events throughout the year such as: workshops, seminars, social gatherings, parties and so on. It allows event attendees to filter events and register.
 
 The project uses:
+
 > Java 17  
 > SpringBoot 3.1.4  
 > PostgreSQL  
