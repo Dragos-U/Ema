@@ -3,6 +3,7 @@ package ro.itschool.ema.models.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Validated
 @Table(name = "organizers")
 public class Organizer extends User {
     @Id
