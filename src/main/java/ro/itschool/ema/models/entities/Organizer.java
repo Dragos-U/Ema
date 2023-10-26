@@ -2,25 +2,19 @@ package ro.itschool.ema.models.entities;
 
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.validation.annotation.Validated;
 
-import java.util.Date;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Validated
 @Table(name = "organizers")
-public class Organizer extends User {
+public class Organizer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Builder
-    public Organizer(String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber) {
-        super(firstName, lastName, dateOfBirth, email, phoneNumber);
-    }
+    @Column(name = "entity_name", unique = true)
+    private String entityName;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "website")
+    private String website;
 }
+
+

@@ -1,13 +1,12 @@
 package ro.itschool.ema.models.dtos;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.NonNull;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -15,20 +14,20 @@ import java.util.Date;
 public class StaffDTO implements Serializable {
     private Long id;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotEmpty(message = "Field cannot be empty.")
     private String firstName;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotEmpty(message = "Field cannot be empty.")
     private String lastName;
 
     @NotNull(message = "Field cannot be null.")
     @Past(message = "Invalid date.")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotEmpty(message = "Field cannot be empty.")
     @Email(message = "Invalid email. Please enter a valid email.")
     private String email;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotEmpty(message = "Field cannot be empty.")
     private String phoneNumber;
 }

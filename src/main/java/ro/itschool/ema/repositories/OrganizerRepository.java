@@ -6,5 +6,4 @@ import ro.itschool.ema.models.entities.Organizer;
 
 @Repository
 public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
-    boolean existsByEmail(String email);
 }

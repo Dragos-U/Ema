@@ -5,16 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Validated
 @Table(name = "events")
 public class Event {
     @Id
@@ -25,7 +24,13 @@ public class Event {
     private String eventName;
 
     @Column(name = "event_date")
-    private Date eventDate;
+    private LocalDate eventDate;
+
+    @Column(name = "start_time")
+    private LocalTime startTime;
+
+    @Column(name = "end_time")
+    private LocalTime endTime;
 
     @Column(name = "event_venue")
     private String eventVenue;
@@ -34,5 +39,5 @@ public class Event {
     private String eventDescription;
 
     @Column(name = "max_num_participants")
-    private int maxNumOfParticipants;
+    private Integer maxNumOfParticipants;
 }

@@ -7,6 +7,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ro.itschool.ema.exceptions.EventCreateException;
 import ro.itschool.ema.exceptions.UserCreateException;
 import ro.itschool.ema.models.dtos.EventDTO;
 import ro.itschool.ema.models.dtos.StaffDTO;
@@ -20,9 +21,6 @@ import java.util.Set;
 @Slf4j
 @Service
 public class StaffServiceImpl implements StaffService {
-
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
 
     private final StaffRepository staffRepository;
     private final EventRepository eventRepository;
@@ -38,13 +36,11 @@ public class StaffServiceImpl implements StaffService {
     public StaffDTO createStaff(StaffDTO staffDTO) {
         Staff staffEntity = objectMapper.convertValue(staffDTO, Staff.class);
 
-        Set<ConstraintViolation<Staff>> violations = validator.validate(staffEntity);
-        for (ConstraintViolation<Staff> vio : violations) {
-            log.error(vio.getMessage());
-        }
-
         if (staffRepository.existsByEmail(staffEntity.getEmail())) {
             throw new UserCreateException("User already exists");
+        }
+        if (staffEntity.getAge(staffEntity.getDateOfBirth()) < 16) {
+            throw new UserCreateException("User must be at least 16.");
         }
         Staff staffResponseEntity = staffRepository.save(staffEntity);
         return objectMapper.convertValue(staffResponseEntity, StaffDTO.class);
@@ -53,10 +49,9 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public EventDTO createEvent(EventDTO eventDTO) {
         Event eventEntity = objectMapper.convertValue(eventDTO, Event.class);
-        Set<ConstraintViolation<Event>> violations = validator.validate(eventEntity);
 
-        for (ConstraintViolation<Event> vio : violations) {
-            log.error(vio.getMessage());
+        if (!eventDTO.getStartTime().isBefore(eventDTO.getEndTime())) {
+            throw new EventCreateException("Event start time must be before event end time.");
         }
 
         Event eventResponseEntity = eventRepository.save(eventEntity);

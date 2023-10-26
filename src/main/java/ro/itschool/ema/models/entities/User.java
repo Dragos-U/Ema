@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Past;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -15,7 +16,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-@Validated
 public abstract class User {
     @Column(name = "first_name")
     private String firstName;
@@ -24,9 +24,9 @@ public abstract class User {
     private String lastName;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "phone_number")
