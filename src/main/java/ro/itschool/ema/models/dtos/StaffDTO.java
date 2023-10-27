@@ -14,20 +14,20 @@ import java.util.Date;
 public class StaffDTO implements Serializable {
     private Long id;
 
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "firstName cannot be empty.")
     private String firstName;
 
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "lastName cannot be empty.")
     private String lastName;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotNull(message = "dateOfBirth cannot be null.")
     @Past(message = "Invalid date.")
     private LocalDate dateOfBirth;
 
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "email cannot be empty.")
     @Email(message = "Invalid email. Please enter a valid email.")
     private String email;
 
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "phoneNumber cannot be empty.")
     private String phoneNumber;
 }

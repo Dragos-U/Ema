@@ -15,26 +15,26 @@ import java.util.Date;
 @Validated
 public class EventDTO implements Serializable {
     private Long id;
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "eventName cannot be empty.")
     private String eventName;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotNull(message = "eventDate cannot be null.")
     @Future(message = "Invalid date.")
     private LocalDate eventDate;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotNull(message = "startTime cannot be null.")
     private LocalTime startTime;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotNull(message = "endTime cannot be null.")
     private LocalTime endTime;
 
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "eventVenue cannot be empty.")
     private String eventVenue;
 
-    @NotEmpty(message = "Field cannot be empty.")
+    @NotEmpty(message = "eventDescription cannot be empty.")
     private String eventDescription;
 
-    @NotNull(message = "Field cannot be null.")
+    @NotNull(message = "maxNumOfParticipants cannot be null.")
     @Min(value = 10, message = "Participant number should be greater than 10.")
     @Max(value = 10000, message = "Participant number should be less than 10000.")
     private Integer maxNumOfParticipants;
