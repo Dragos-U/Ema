@@ -18,10 +18,10 @@ public class Organizer {
     private String description;
     @Column(name = "website")
     private String website;
-    @OneToMany(mappedBy = "organizers")
+    @OneToMany(mappedBy = "organizer")
     private List<Staff> staffList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "organizers")
+    @OneToMany(mappedBy = "organizer")
     private List<Event> eventList = new ArrayList<>();
 
     public void addStaffToList(Staff staff) {

@@ -42,6 +42,6 @@ public class Event {
     private Integer maxNumOfParticipants;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organizers")
+    @JoinColumn(name = "organizer")
     private Organizer organizer;
 }
