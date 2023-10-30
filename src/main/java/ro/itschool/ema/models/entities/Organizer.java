@@ -24,6 +24,9 @@ public class Organizer {
     @OneToMany(mappedBy = "organizer")
     private List<Event> eventList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "organizer")
+    private Address address;
+
     public void addStaffToList(Staff staff) {
         staffList.add(staff);
     }

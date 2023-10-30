@@ -17,6 +17,7 @@ mvnw.cmd
 .sts4-cache
 
 ### IntelliJ IDEA ###
+.resources
 .mvn
 .idea
 .idea/modules.xml
