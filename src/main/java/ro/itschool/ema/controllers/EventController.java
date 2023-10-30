@@ -4,6 +4,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.itschool.ema.models.dtos.EventDTO;
+import ro.itschool.ema.models.entities.Event;
 import ro.itschool.ema.services.EventService;
 
 import java.util.List;
@@ -36,5 +37,11 @@ public class EventController {
         } else {
             return ResponseEntity.ok(upcomingEvents);
         }
+    }
+
+    @PutMapping("/events/{id}")
+    public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO){
+        EventDTO updateEventDTO = eventService.updateEvent(id, eventDTO);
+        return ResponseEntity.ok().body(updateEventDTO);
     }
 }
