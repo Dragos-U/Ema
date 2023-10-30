@@ -19,11 +19,10 @@ import ro.itschool.ema.services.StaffService;
 public class StaffController {
     private final StaffService staffService;
 
-    private final ParticipantService participantService;
 
-    public StaffController(StaffService staffService, ParticipantService participantService) {
+
+    public StaffController(StaffService staffService) {
         this.staffService = staffService;
-        this.participantService = participantService;
     }
 
     @PostMapping("/staff")
@@ -36,9 +35,6 @@ public class StaffController {
         return ResponseEntity.ok(staffService.createEvent(eventDTO));
     }
 
-    @PostMapping("/events/{eventId}/participants")
-    public ResponseEntity<ParticipantDTO> createParticipant(@RequestBody @Valid ParticipantDTO participantDTO) {
-        return ResponseEntity.ok(participantService.createParticipant(participantDTO));
-    }
+
 
 }
