@@ -25,8 +25,4 @@ public class ParticipantController {
     public ResponseEntity<ParticipantDTO> createParticipant(@RequestBody @Valid ParticipantDTO participantDTO) {
         return ResponseEntity.ok(participantService.createParticipant(participantDTO));
     }
-
-
-
-
 }

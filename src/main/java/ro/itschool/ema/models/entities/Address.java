@@ -1,8 +1,15 @@
 package ro.itschool.ema.models.entities;
 
-import lombok.Data;
 import jakarta.persistence.*;
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -23,16 +30,13 @@ public class Address {
     @Column(name = "country")
     private String country;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organizer")
+    @OneToOne(mappedBy = "address")
     private Organizer organizer;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "participant")
+    @OneToOne(mappedBy = "address")
     private Participant participant;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "staff")
+    @OneToOne(mappedBy = "address")
     private Staff staff;
 
 }

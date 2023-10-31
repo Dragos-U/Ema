@@ -6,8 +6,5 @@ public interface AddressService {
 
     AddressDTO createAddress(AddressDTO addressDTO);
 
-
     boolean deleteAddressById(Long id);
-
-
 }

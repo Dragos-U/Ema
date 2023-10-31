@@ -35,6 +35,4 @@ public class StaffController {
         return ResponseEntity.ok(staffService.createEvent(eventDTO));
     }
 
-
-
 }

@@ -1,8 +1,15 @@
 package ro.itschool.ema.models.entities;
 
-import lombok.Data;
 import jakarta.persistence.*;
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "participants")
 public class Participant {
@@ -20,7 +27,8 @@ public class Participant {
     @Column(name = "phone_number")
     private int phoneNumber;
 
-    @OneToOne(mappedBy = "participant")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
     private Address address;
 
 }

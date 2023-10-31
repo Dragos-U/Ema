@@ -10,8 +10,6 @@ import ro.itschool.ema.repositories.AddressRepository;
 @Slf4j
 @Service
 public class AddressServiceImpl implements AddressService{
-
-
     private final AddressRepository addressRepository;
 
     private final ObjectMapper objectMapper;
@@ -28,7 +26,6 @@ public class AddressServiceImpl implements AddressService{
         Address saveAddressEntity = addressRepository.save(addressEntity);
         return objectMapper.convertValue(saveAddressEntity, AddressDTO.class);
     }
-
 
 
     @Override
