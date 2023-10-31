@@ -27,6 +27,10 @@ public class Staff extends User {
     @JoinColumn(name = "organizer")
     private Organizer organizer;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     public int getAge(LocalDate dateOfBirth) {
         LocalDate today = LocalDate.now();
         return Period.between(dateOfBirth, today).getYears();
