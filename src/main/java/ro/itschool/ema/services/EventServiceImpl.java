@@ -1,15 +1,19 @@
 package ro.itschool.ema.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ro.itschool.ema.exceptions.EventCreateException;
 import ro.itschool.ema.exceptions.EventNotFoundException;
 import ro.itschool.ema.exceptions.EventUpdateException;
 import ro.itschool.ema.models.dtos.EventDTO;
+import ro.itschool.ema.models.entities.Address;
 import ro.itschool.ema.models.entities.Event;
+import ro.itschool.ema.repositories.AddressRepository;
 import ro.itschool.ema.repositories.EventRepository;
 
 import java.time.LocalDateTime;
@@ -23,7 +27,25 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService{
 
     private final EventRepository eventRepository;
+    private final AddressRepository addressRepository;
     private final ObjectMapper objectMapper;
+
+    @Override
+    @Transactional
+    public EventDTO createEvent(EventDTO eventDTO) {
+        if (!eventDTO.getStartTime().isBefore(eventDTO.getEndTime())) {
+            throw new EventCreateException("Event start time must be before event end time.");
+        }
+
+        Event eventEntity = objectMapper.convertValue(eventDTO, Event.class);
+        if (eventEntity.getAddress() != null) {
+            Address addressEntity = addressRepository.save(eventEntity.getAddress());
+            eventEntity.setAddress(addressEntity);
+        }
+
+        Event eventResponseEntity = eventRepository.save(eventEntity);
+        return objectMapper.convertValue(eventResponseEntity, EventDTO.class);
+    }
 
     @Override
     public EventDTO getEventById(Long id) {

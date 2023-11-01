@@ -6,9 +6,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 
 @Data
@@ -33,6 +31,9 @@ public class EventDTO implements Serializable {
 
     @NotEmpty(message = "eventDescription cannot be empty.")
     private String eventDescription;
+
+    @NotEmpty(message = "address cannot be empty.")
+    private AddressDTO address;
 
     @NotNull(message = "maxNumOfParticipants cannot be null.")
     @Min(value = 10, message = "Participant number should be greater than 10.")

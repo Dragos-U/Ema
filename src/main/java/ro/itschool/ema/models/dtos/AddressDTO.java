@@ -24,5 +24,4 @@ public class AddressDTO implements Serializable {
 
     @NotEmpty(message = "Address country field cannot be empty.")
     private String country;
-
 }

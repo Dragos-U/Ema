@@ -25,7 +25,7 @@ public class Organizer {
     private List<Event> eventList = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address")
     private Address address;
 
     public void addStaffToList(Staff staff) {

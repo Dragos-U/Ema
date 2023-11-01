@@ -1,10 +1,9 @@
 package ro.itschool.ema.controllers;
 
-import org.springframework.http.RequestEntity;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.itschool.ema.models.dtos.EventDTO;
-import ro.itschool.ema.models.entities.Event;
 import ro.itschool.ema.services.EventService;
 
 import java.util.List;
@@ -19,10 +18,15 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    @PostMapping("/events")
+    public ResponseEntity<EventDTO> createEvent(@RequestBody @Valid EventDTO eventDTO) {
+        return ResponseEntity.ok(eventService.createEvent(eventDTO));
+    }
+
     @GetMapping("/events/{id}")
     public ResponseEntity<EventDTO> getEventById(@PathVariable long id){
         EventDTO eventDTO = eventService.getEventById(id);
-        if(eventDTO.equals(null)){
+        if(eventDTO == null){
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(eventDTO);

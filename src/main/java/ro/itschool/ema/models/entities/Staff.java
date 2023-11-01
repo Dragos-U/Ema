@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 @Getter
 @Setter
@@ -28,11 +27,7 @@ public class Staff extends User {
     private Organizer organizer;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address")
     private Address address;
 
-    public int getAge(LocalDate dateOfBirth) {
-        LocalDate today = LocalDate.now();
-        return Period.between(dateOfBirth, today).getYears();
-    }
 }

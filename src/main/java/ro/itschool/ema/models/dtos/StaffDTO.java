@@ -2,12 +2,10 @@ package ro.itschool.ema.models.dtos;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.NonNull;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @Validated
@@ -30,4 +28,7 @@ public class StaffDTO implements Serializable {
 
     @NotEmpty(message = "phoneNumber cannot be empty.")
     private String phoneNumber;
+
+    @NotEmpty(message = "address cannot be empty.")
+    private AddressDTO address;
 }
