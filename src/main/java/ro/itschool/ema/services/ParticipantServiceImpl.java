@@ -19,7 +19,6 @@ import ro.itschool.ema.repositories.ParticipantRepository;
 @RequiredArgsConstructor
 public class ParticipantServiceImpl implements ParticipantService {
 
-
     private final ParticipantRepository participantRepository;
     private final AddressRepository addressRepository;
     private final ObjectMapper objectMapper;

@@ -16,16 +16,19 @@ import java.util.Date;
 public class OrganizerDTO implements Serializable {
     private Long id;
 
-    @NotEmpty(message = "organizerName cannot be empty.")
+    @NotEmpty(message = "Organizer name field cannot be empty.")
     private String organizerName;
 
-    @NotEmpty(message = "description cannot be empty.")
+    @NotEmpty(message = "Description field cannot be empty.")
     private String description;
 
-    @NotEmpty(message = "website cannot be empty.")
+    @NotEmpty(message = "Website field cannot be empty.")
     @URL(message = "Must be a valid website.")
     private String website;
 
-    @NotEmpty(message = "phoneNumber cannot be empty.")
+    @NotEmpty(message = "Phone number field cannot be empty.")
     private String phoneNumber;
+
+    @NotNull(message = "Address field cannot be null")
+    private AddressDTO address;
 }

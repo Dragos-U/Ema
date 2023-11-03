@@ -1,5 +1,8 @@
 package ro.itschool.ema.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +34,14 @@ public class Address {
     private String country;
 
     @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Organizer organizer;
 
     @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Participant participant;
 
     @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Staff staff;
-
 }

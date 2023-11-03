@@ -1,5 +1,6 @@
 package ro.itschool.ema.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -41,11 +44,16 @@ public class Event {
     @Column(name = "max_num_participants")
     private Integer maxNumOfParticipants;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organizer")
-    private Organizer organizer;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     private Address address;
+
+    @ManyToMany
+    @JoinTable(
+        name = "event_organizer",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "organizer_id")
+    )
+    @JsonIgnore
+    private Set<Organizer> organizers = new HashSet<>();
 }

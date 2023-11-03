@@ -30,5 +30,4 @@ public class Participant {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address")
     private Address address;
-
 }

@@ -12,23 +12,28 @@ import java.time.LocalDate;
 public class StaffDTO implements Serializable {
     private Long id;
 
-    @NotEmpty(message = "firstName cannot be empty.")
+    @NotEmpty(message = "First name field cannot be empty.")
     private String firstName;
 
-    @NotEmpty(message = "lastName cannot be empty.")
+    @NotEmpty(message = "Last name field  cannot be empty.")
     private String lastName;
 
-    @NotNull(message = "dateOfBirth cannot be null.")
+    @NotNull(message = "Date of birth field cannot be null.")
     @Past(message = "Invalid date.")
     private LocalDate dateOfBirth;
 
-    @NotEmpty(message = "email cannot be empty.")
+    @NotEmpty(message = "Email field cannot be empty.")
     @Email(message = "Invalid email. Please enter a valid email.")
     private String email;
 
-    @NotEmpty(message = "phoneNumber cannot be empty.")
+    @NotEmpty(message = "Phone number field cannot be empty.")
     private String phoneNumber;
 
-    @NotEmpty(message = "address cannot be empty.")
+    @NotNull(message = "Address field cannot be null.")
     private AddressDTO address;
+
+    @NotNull(message = "Organizer id cannot be null")
+    private Long organizerId;
+
+    private OrganizerDTO organizer;
 }
