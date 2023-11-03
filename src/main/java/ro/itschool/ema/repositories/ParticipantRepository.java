@@ -7,6 +7,7 @@ import ro.itschool.ema.models.entities.Participant;
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
+    boolean existsByName(String name);
     boolean existsByEmail(String email);
 
 }

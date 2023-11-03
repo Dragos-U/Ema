@@ -1,6 +1,8 @@
 package ro.itschool.ema.models.dtos;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -21,6 +23,7 @@ public class ParticipantDTO implements Serializable {
     @NotEmpty(message = "phoneNumber cannot be empty.")
     private String phoneNumber;
 
-    @NotEmpty(message = "address cannot be empty.")
+    @NotNull
+    @Valid
     private AddressDTO address;
 }

@@ -24,7 +24,6 @@ public class StaffServiceImpl implements StaffService {
     private final AddressRepository addressRepository;
     private final ObjectMapper objectMapper;
 
-
     @Override
     @Transactional
     public StaffDTO createStaff(StaffDTO staffDTO) {
