@@ -1,7 +1,6 @@
 package ro.itschool.ema.controllers;
 
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,6 +23,7 @@ import ro.itschool.ema.models.dtos.ParticipantDTO;
 import ro.itschool.ema.services.ParticipantService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Slf4j
 @Transactional
 @AutoConfigureTestDatabase
 class ParticipantControllerIntegrationTest {
@@ -39,30 +39,25 @@ class ParticipantControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ParticipantService participantService;
-
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     void testCreateParticipantShouldPass() throws Exception {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setId(1L);
         addressDTO.setStreet("Aleea Adjud, Sector 3");
         addressDTO.setCity("Bucuresti");
         addressDTO.setPostalCode(132736);
         addressDTO.setCountry("Romania");
 
         ParticipantDTO participantDTO = new ParticipantDTO();
-        participantDTO.setId(1L);
         participantDTO.setName("Dumitru Alex");
         participantDTO.setEmail("dum.alex@gmail.com");
         participantDTO.setPhoneNumber("0471-562-921");
         participantDTO.setAddress(addressDTO);
 
         MvcResult result = mockMvc.perform(post("/api/events/1/participants")
-                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(participantDTO)))
                         .andExpect(status().isOk())
                         .andReturn();
