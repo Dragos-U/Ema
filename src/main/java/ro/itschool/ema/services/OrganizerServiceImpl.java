@@ -3,6 +3,7 @@ package ro.itschool.ema.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ro.itschool.ema.exceptions.OrganizerCreateException;
 import ro.itschool.ema.models.dtos.AddressDTO;
 import ro.itschool.ema.models.dtos.OrganizerDTO;
 import ro.itschool.ema.models.entities.Address;
@@ -28,6 +29,9 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public OrganizerDTO createOrganizer(OrganizerDTO organizerDTO) {
+        if (organizerRepository.existsByOrganizerName(organizerDTO.getOrganizerName()) && organizerRepository.existsByWebsite(organizerDTO.getWebsite())) {
+            throw new OrganizerCreateException("Organizer already exists.");
+        }
         Organizer organizerEntity = objectMapper.convertValue(organizerDTO, Organizer.class);
         Address addressEntity = addressRepository.save(organizerEntity.getAddress());
         organizerEntity.setAddress(addressEntity);

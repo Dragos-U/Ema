@@ -8,5 +8,4 @@ import ro.itschool.ema.models.entities.Participant;
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
     boolean existsByEmail(String email);
-
 }

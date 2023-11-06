@@ -42,7 +42,7 @@ public class EventDTO implements Serializable {
     private Integer maxNumOfParticipants;
 
     @NotNull(message = "Organizer field cannot be null.")
-    private Long organizerId;
+    private long[] organizerIds;
 
     private Set<OrganizerDTO> organizers;
 }

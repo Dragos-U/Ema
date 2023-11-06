@@ -20,11 +20,15 @@ public class OrganizerController {
 
     @GetMapping("/organizers")
     public ResponseEntity<List<OrganizerDTO>> getAllOrganizers() {
-        return ResponseEntity.ok(organizerService.getAllOrganizers());
+        List<OrganizerDTO> allOrganizers = organizerService.getAllOrganizers();
+        if (allOrganizers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(allOrganizers);
+        }
     }
     @PostMapping("/organizers")
     public ResponseEntity<OrganizerDTO> createOrganizer(@RequestBody @Valid OrganizerDTO organizerDTO) {
         return ResponseEntity.ok(organizerService.createOrganizer(organizerDTO));
     }
-
 }

@@ -7,4 +7,6 @@ import ro.itschool.ema.models.entities.Staff;
 
 @Repository
 public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
+    boolean existsByOrganizerName(String organizerName);
+    boolean existsByWebsite(String website);
 }
