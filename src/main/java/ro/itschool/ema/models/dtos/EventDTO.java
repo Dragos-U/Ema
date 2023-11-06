@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @Data
 @Validated
 public class EventDTO implements Serializable {
+
     private Long id;
     @NotEmpty(message = "eventName cannot be empty.")
     private String eventName;
