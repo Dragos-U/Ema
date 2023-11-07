@@ -30,7 +30,6 @@ public class StaffServiceImpl implements StaffService {
     private final OrganizerRepository organizerRepository;
     private final ObjectMapper objectMapper;
 
-
     @Override
     @Transactional
     public StaffDTO createStaff(StaffDTO staffDTO) {

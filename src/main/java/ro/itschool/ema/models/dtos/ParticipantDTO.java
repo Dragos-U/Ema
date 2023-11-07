@@ -1,5 +1,6 @@
 package ro.itschool.ema.models.dtos;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class ParticipantDTO implements Serializable {
     private String phoneNumber;
 
     @NotNull(message = "Address field cannot be null.")
+    @Valid
     private AddressDTO address;
 }

@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @Validated
 public class EventDTO implements Serializable {
+
     private Long id;
 
     @NotEmpty(message = "Event field cannot be empty.")
