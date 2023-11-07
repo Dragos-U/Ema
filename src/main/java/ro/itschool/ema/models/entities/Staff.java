@@ -1,5 +1,6 @@
 package ro.itschool.ema.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "admin_staff")
+@Table(name = "staff")
 public class Staff extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +30,4 @@ public class Staff extends User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address")
     private Address address;
-
 }

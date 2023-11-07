@@ -15,8 +15,6 @@ import ro.itschool.ema.models.entities.Participant;
 import ro.itschool.ema.repositories.AddressRepository;
 import ro.itschool.ema.repositories.ParticipantRepository;
 
-
-
 @Slf4j
 @Service
 @RequiredArgsConstructor

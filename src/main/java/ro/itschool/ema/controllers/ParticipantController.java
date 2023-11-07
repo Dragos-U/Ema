@@ -14,7 +14,6 @@ import ro.itschool.ema.services.ParticipantService;
 @RequestMapping("/api")
 public class ParticipantController {
 
-
     private final ParticipantService participantService;
 
     public ParticipantController(ParticipantService participantService){

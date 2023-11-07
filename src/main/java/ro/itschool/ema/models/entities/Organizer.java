@@ -1,36 +1,56 @@
 package ro.itschool.ema.models.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "organizers")
 public class Organizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "organizer_name", unique = true)
+
+    @Column(name = "organizer_name")
     private String organizerName;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "website")
     private String website;
-    @OneToMany(mappedBy = "organizer")
-    private List<Staff> staffList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "organizer")
-    private List<Event> eventList = new ArrayList<>();
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    private Long organizerId;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     private Address address;
 
-    public void addStaffToList(Staff staff) {
-        staffList.add(staff);
-    }
+    @OneToMany(mappedBy = "organizer")
+    @JsonIgnore
+    private List<Staff> staffList;
+
+    @ManyToMany(mappedBy = "organizers")
+    @JsonIgnore
+    private Set<Event> events = new HashSet<>();
 }
 
 

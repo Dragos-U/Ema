@@ -10,24 +10,29 @@ import org.springframework.web.server.ResponseStatusException;
 import ro.itschool.ema.exceptions.EventCreateException;
 import ro.itschool.ema.exceptions.EventNotFoundException;
 import ro.itschool.ema.exceptions.EventUpdateException;
+import ro.itschool.ema.exceptions.OrganizerNotFoundException;
 import ro.itschool.ema.models.dtos.EventDTO;
+import ro.itschool.ema.models.dtos.OrganizerDTO;
 import ro.itschool.ema.models.entities.Address;
 import ro.itschool.ema.models.entities.Event;
+import ro.itschool.ema.models.entities.Organizer;
 import ro.itschool.ema.repositories.AddressRepository;
 import ro.itschool.ema.repositories.EventRepository;
+import ro.itschool.ema.repositories.OrganizerRepository;
 
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService{
+public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
     private final AddressRepository addressRepository;
+    private final OrganizerRepository organizerRepository;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -38,29 +43,82 @@ public class EventServiceImpl implements EventService{
         }
 
         Event eventEntity = objectMapper.convertValue(eventDTO, Event.class);
+
+        Set<Organizer> organizerList = getOrganizer(eventDTO.getOrganizerIds());
+        eventEntity.setOrganizers(organizerList);
+        addEventToList(eventEntity, organizerList);
+
         if (eventEntity.getAddress() != null) {
             Address addressEntity = addressRepository.save(eventEntity.getAddress());
             eventEntity.setAddress(addressEntity);
         }
 
         Event eventResponseEntity = eventRepository.save(eventEntity);
-        return objectMapper.convertValue(eventResponseEntity, EventDTO.class);
+
+        Set<OrganizerDTO> organizerDTOSet = getOrganizerDTOSet(organizerList);
+        long[] organizerIds = getOrganizerIds(organizerDTOSet);
+
+        EventDTO eventDTOResponse = convertToDTO(eventResponseEntity);
+        eventDTOResponse.setOrganizers(organizerDTOSet);
+        eventDTOResponse.setOrganizerIds(organizerIds);
+        return eventDTOResponse;
     }
 
     @Override
     public EventDTO getEventById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException("Event not found with id: " + id));
-        return convertToDTO(event);
+        Set<OrganizerDTO> organizerDTOSet = getOrganizerDTOSet(event.getOrganizers());
+        long[] organizerIds = getOrganizerIds(organizerDTOSet);
+
+        EventDTO eventDTO = convertToDTO(event);
+        eventDTO.setOrganizers(organizerDTOSet);
+        eventDTO.setOrganizerIds(organizerIds);
+        return eventDTO;
+    }
+
+    @Override
+    public List<EventDTO> getAllEvents() {
+        List<Event> events = eventRepository.findAll();
+        List<EventDTO> eventDTOList = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.getEventDate().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) {
+                List<Long> organizerIDs = new ArrayList<>();
+                EventDTO eventDTO = objectMapper.convertValue(event, EventDTO.class);
+                Set<OrganizerDTO> organizerDTOSet = new HashSet<>();
+
+                for (Organizer organizer : event.getOrganizers()) {
+                    organizerIDs.add(organizer.getId());
+                    OrganizerDTO organizerDTO = objectMapper.convertValue(organizer, OrganizerDTO.class);
+                    organizerDTOSet.add(organizerDTO);
+                }
+                long[] orgIds = organizerIDs.stream().mapToLong(i -> i).toArray();
+                eventDTO.setOrganizers(organizerDTOSet);
+                eventDTO.setOrganizerIds(orgIds);
+                eventDTOList.add(eventDTO);
+            }
+        }
+        return eventDTOList;
     }
 
     @Override
     public List<EventDTO> getUpcomingEvents() {
-        LocalDateTime now = LocalDateTime.now();
-        return eventRepository.findAll().stream()
-                .filter(event -> event.getEventDate().isAfter(ChronoLocalDate.from(now)))
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        List<Event> events = eventRepository.findAll();
+        List<EventDTO> eventDTOList = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.getEventDate().isAfter(ChronoLocalDate.from(LocalDateTime.now()))){
+                Set<OrganizerDTO> organizerDTOSet = getOrganizerDTOSet(event.getOrganizers());
+                long[] organizersIds = getOrganizerIds(organizerDTOSet);
+
+                EventDTO eventDTO = convertToDTO(event);
+                eventDTO.setOrganizers(organizerDTOSet);
+                eventDTO.setOrganizerIds(organizersIds);
+                eventDTOList.add(eventDTO);
+            }
+        }
+        return eventDTOList;
     }
 
     @Override
@@ -92,5 +150,33 @@ public class EventServiceImpl implements EventService{
 
     private EventDTO convertToDTO(Event event){
         return objectMapper.convertValue(event, EventDTO.class);
+    }
+
+    private Set<Organizer> getOrganizer(long[] organizerIds){
+        Set<Organizer> organizers = new HashSet<>();
+        for (long organizerId : organizerIds) {
+            Optional<Organizer> organizerOptional = organizerRepository.findById(organizerId);
+            Organizer organizer = organizerOptional.orElseThrow(() -> new OrganizerNotFoundException("Could not find specified organization"));
+            organizers.add(organizer);
+        }
+        return organizers;
+    }
+
+    private Set<OrganizerDTO> getOrganizerDTOSet(Set<Organizer> organizers) {
+        return organizers.stream()
+                .map(organizer -> objectMapper.convertValue(organizer, OrganizerDTO.class))
+                .collect(Collectors.toSet());
+    }
+
+    private long[] getOrganizerIds(Set<OrganizerDTO> organizerDTOSet){
+        return organizerDTOSet.stream()
+                .mapToLong(OrganizerDTO::getId)
+                .toArray();
+    }
+    private void addEventToList(Event event, Set<Organizer> organizers){
+        for (Organizer organizer : organizers) {
+            Set<Event> events = organizer.getEvents();
+            events.add(event);
+        }
     }
 }

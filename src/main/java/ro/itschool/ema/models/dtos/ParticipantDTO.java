@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Data
 @Validated
 public class ParticipantDTO implements Serializable {
-
     private Long id;
 
     @NotEmpty(message = "Participant name field cannot be empty")
@@ -20,10 +19,10 @@ public class ParticipantDTO implements Serializable {
     @NotEmpty(message = "Participant email field cannot be empty")
     private String email;
 
-    @NotEmpty(message = "phoneNumber cannot be empty.")
+    @NotEmpty(message = "Phone number field cannot be empty.")
     private String phoneNumber;
 
-    @NotNull
+    @NotNull(message = "Address field cannot be null.")
     @Valid
     private AddressDTO address;
 }

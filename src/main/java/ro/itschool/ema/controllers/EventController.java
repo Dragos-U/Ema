@@ -23,10 +23,20 @@ public class EventController {
         return ResponseEntity.ok(eventService.createEvent(eventDTO));
     }
 
+    @GetMapping("/events")
+    public ResponseEntity<List<EventDTO>> getAllEvents() {
+        List<EventDTO> allEvents = eventService.getAllEvents();
+        if (allEvents.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(allEvents);
+        }
+    }
+
     @GetMapping("/events/{id}")
-    public ResponseEntity<EventDTO> getEventById(@PathVariable long id){
+    public ResponseEntity<EventDTO> getEventById(@PathVariable long id) {
         EventDTO eventDTO = eventService.getEventById(id);
-        if(eventDTO == null){
+        if (eventDTO == null) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(eventDTO);
@@ -34,9 +44,9 @@ public class EventController {
     }
 
     @GetMapping("/events/upcoming")
-    public ResponseEntity<List<EventDTO>> getUpcomingEvents(){
+    public ResponseEntity<List<EventDTO>> getUpcomingEvents() {
         List<EventDTO> upcomingEvents = eventService.getUpcomingEvents();
-        if(upcomingEvents.isEmpty()) {
+        if (upcomingEvents.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(upcomingEvents);
@@ -44,7 +54,7 @@ public class EventController {
     }
 
     @PutMapping("/events/{id}")
-    public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO){
+    public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
         EventDTO updateEventDTO = eventService.updateEvent(id, eventDTO);
         return ResponseEntity.ok().body(updateEventDTO);
     }

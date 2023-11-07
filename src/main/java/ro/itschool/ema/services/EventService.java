@@ -9,5 +9,6 @@ public interface EventService {
     EventDTO createEvent(EventDTO eventDTO);
     EventDTO getEventById(Long id);
     List<EventDTO> getUpcomingEvents();
+    List<EventDTO> getAllEvents();
     EventDTO updateEvent(Long id, EventDTO eventDTO);
 }
