@@ -20,8 +20,7 @@ import ro.itschool.ema.repositories.ParticipantRepository;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -94,7 +93,25 @@ class ParticipantServiceImplTest {
 
     }
 
+    @Test
+    @DisplayName("Throw exception if participant already exists by email")
+    void createParticipantAlreadyExists() {
+        ParticipantDTO participantDTO = new ParticipantDTO();
+        participantDTO.setEmail("mihai@yahoo.com");
+
+        when(participantRepository.existsByEmail("mihai@yahoo.com")).thenReturn(true);
+        assertThrows(ParticipantCreateException.class, () -> participantServiceImpl.createParticipant(participantDTO));
+    }
 
 
+    @Test
+    @DisplayName("Error occurs when participant has a null address.")
+    void participantAddressIsNull(){
+        ParticipantDTO participantDTO = new ParticipantDTO();
+        participantDTO.setAddress(null);
+
+        when(participantServiceImpl.createParticipant(participantDTO).getAddress() == null).thenReturn(true);
+        assertNull(participantDTO.getAddress());
+    }
 
 }

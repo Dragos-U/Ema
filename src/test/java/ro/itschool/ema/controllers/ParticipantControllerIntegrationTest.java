@@ -1,6 +1,7 @@
 package ro.itschool.ema.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -22,8 +23,7 @@ import ro.itschool.ema.models.dtos.AddressDTO;
 import ro.itschool.ema.models.dtos.ParticipantDTO;
 import ro.itschool.ema.services.ParticipantService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,6 +68,24 @@ class ParticipantControllerIntegrationTest {
 
         assertEquals(convertedParticipantDTO.getName(), participantDTO.getName());
 
+    }
+
+    @Test
+    void testCreateParticipantShouldFail() throws Exception {
+        ParticipantDTO participantDTO = new ParticipantDTO();
+        participantDTO.setName("Dumitru Alex");
+        participantDTO.setEmail("dum.alex@gmail.com");
+        participantDTO.setPhoneNumber("0471-562-921");
+        participantDTO.setAddress(null);
+
+        MvcResult result = mockMvc.perform(post("/api/events/1/participants")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(participantDTO)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String resultAsString = result.getResponse().getContentAsString();
+        assertTrue(resultAsString.contains("Bad Request"));
     }
 
 }
