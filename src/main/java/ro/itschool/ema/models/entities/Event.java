@@ -1,5 +1,6 @@
 package ro.itschool.ema.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,4 +57,11 @@ public class Event {
     )
     @JsonIgnore
     private Set<Organizer> organizers = new HashSet<>();
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "event_participants",
+            joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "participant_id")})
+    @JsonIgnore
+    private Set<Participant> participants = new HashSet<>();
 }

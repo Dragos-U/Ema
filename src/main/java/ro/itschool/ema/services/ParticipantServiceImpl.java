@@ -8,12 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ro.itschool.ema.exceptions.EventNotFoundException;
 import ro.itschool.ema.exceptions.ParticipantCreateException;
 import ro.itschool.ema.models.dtos.ParticipantDTO;
-import ro.itschool.ema.models.entities.Address;
+import ro.itschool.ema.models.entities.Event;
 import ro.itschool.ema.models.entities.Participant;
-import ro.itschool.ema.repositories.AddressRepository;
+import ro.itschool.ema.repositories.EventRepository;
 import ro.itschool.ema.repositories.ParticipantRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,32 +28,35 @@ public class ParticipantServiceImpl implements ParticipantService {
     public static final String LOCALHOST_8080 = "http://localhost:8080/api/events/{eventId}/participants";
 
     private final ParticipantRepository participantRepository;
-    private final AddressRepository addressRepository;
+    private final EventRepository eventRepository;
     private final ObjectMapper objectMapper;
     private final EmailService emailService;
 
     @Override
     @Transactional
-    public ParticipantDTO createParticipant(ParticipantDTO participantDTO) {
-        String participantDTOEmail = participantDTO.getEmail();
-        Long participantDTOId = participantDTO.getId();
+    public ParticipantDTO createAndAddParticipantToEvent(Long eventId, ParticipantDTO participantDTO) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException("Event not found"));
+        Participant participant = objectMapper.convertValue(participantDTO, Participant.class);
+        participant = participantRepository.save(participant);
 
-        if (participantRepository.existsByName(participantDTO.getName())) {
-            throw new ParticipantCreateException("Participant already exists.");
-        }
+        event.getParticipants().add(participant);
+        participant.getEvents().add(event);
+        eventRepository.save(event);
+        participantRepository.save(participant);
 
-        logger.info("> Sending email to: " + participantDTOEmail);
-        String accountLink = LOCALHOST_8080 + participantDTOId;
-        emailService.sendEmail(participantDTO, accountLink);
-        Participant participantEntity = objectMapper.convertValue(participantDTO, Participant.class);
+        sendEmail(participantDTO);
 
-        if (participantEntity.getAddress() != null) {
-            Address addressEntity = addressRepository.save(participantEntity.getAddress());
-            participantEntity.setAddress(addressEntity);
-        }
+        return objectMapper.convertValue(participant, ParticipantDTO.class);
+    }
 
-        Participant saveParticipantEntity = participantRepository.save(participantEntity);
-        return objectMapper.convertValue(saveParticipantEntity, ParticipantDTO.class);
+    @Override
+    @Transactional
+    public List<ParticipantDTO> getParticipantsForEvent(Long eventId) {
+        List<Participant> participants = participantRepository.findAllByEventId(eventId);
+        return participants.stream()
+                .map(participant -> objectMapper.convertValue(participant, ParticipantDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -59,5 +66,13 @@ public class ParticipantServiceImpl implements ParticipantService {
             return true;
         }
         return false;
+    }
+
+    public void sendEmail(ParticipantDTO participantDTO) {
+        String participantDTOEmail = participantDTO.getEmail();
+        Long participantDTOId = participantDTO.getId();
+        logger.info("> Sending email to: " + participantDTOEmail);
+        String accountLink = LOCALHOST_8080 + participantDTOId;
+        emailService.sendEmail(participantDTO, accountLink);
     }
 }
