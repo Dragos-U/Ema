@@ -1,6 +1,7 @@
 package ro.itschool.ema.models.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.validation.annotation.Validated;

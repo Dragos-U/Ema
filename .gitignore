@@ -17,7 +17,7 @@ mvnw.cmd
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.resources
+.test/resources
 .mvn
 .idea
 .idea/modules.xml
@@ -40,3 +40,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/test/resources/application.properties
