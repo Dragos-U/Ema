@@ -53,7 +53,6 @@ class StaffServiceImplTest {
         StaffDTO staffDTO = createStaffDTO();
         Organizer organizer = createOrganizer();
         Staff staffEntity = createStaffEntity();
-//        AddressDTO addressDTO = createAddressDTO();
         Address savedAddress = createAddressEntity();
         Staff savedStaff = createStaffEntity();
         OrganizerDTO organizerDTO = createOrganizerDTO();

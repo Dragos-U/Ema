@@ -79,7 +79,7 @@ public class StaffServiceImpl implements StaffService {
 
     private Organizer getOrganizer(Long organizerId){
         return organizerRepository.findById(organizerId)
-                .orElseThrow(() -> new OrganizerNotFoundException("Could not find specified organization"));
+                .orElseThrow(() -> new OrganizerNotFoundException("Could not find specified organization."));
     }
 
     public void addToStaffList(Organizer organizer, Staff staff){
