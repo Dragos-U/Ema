@@ -11,6 +11,7 @@ import ro.itschool.ema.exceptions.EventCreateException;
 import ro.itschool.ema.exceptions.EventNotFoundException;
 import ro.itschool.ema.exceptions.EventUpdateException;
 import ro.itschool.ema.exceptions.OrganizerNotFoundException;
+import ro.itschool.ema.models.dtos.AddressDTO;
 import ro.itschool.ema.models.dtos.EventDTO;
 import ro.itschool.ema.models.dtos.OrganizerDTO;
 import ro.itschool.ema.models.entities.Address;
@@ -127,7 +128,6 @@ public class EventServiceImpl implements EventService {
             Event updatedEvent = eventRepository.findById(id)
                     .map(event -> updateEventDetails(event, eventDTO))
                     .orElseThrow(() -> new EventNotFoundException("Event not found with id: " + id));
-
             Event savedEvent = eventRepository.save(updatedEvent);
             return convertToDTO(savedEvent);
         } catch (EventNotFoundException e) {
@@ -177,6 +177,21 @@ public class EventServiceImpl implements EventService {
         for (Organizer organizer : organizers) {
             Set<Event> events = organizer.getEvents();
             events.add(event);
+        }
+    }
+
+    public Set<EventDTO> getUpcomingEventsByLocation(List<EventDTO> eventDTOList, String city, String country) {
+        try {
+            Set<EventDTO> upcomingEventsByLocation = eventDTOList.stream()
+                    .filter(eventDTO -> eventDTO.getAddress().getCity().equalsIgnoreCase(city)
+                            && eventDTO.getAddress().getCountry().equalsIgnoreCase(country))
+                    .collect(Collectors.toSet());
+            if (upcomingEventsByLocation.isEmpty()) {
+                throw new EventNotFoundException("No events in the specified Location.");
+            }
+            return upcomingEventsByLocation;
+        } catch (EventNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }
 }

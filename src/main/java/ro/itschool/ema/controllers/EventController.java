@@ -7,6 +7,7 @@ import ro.itschool.ema.models.dtos.EventDTO;
 import ro.itschool.ema.services.EventService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +51,17 @@ public class EventController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(upcomingEvents);
+        }
+    }
+
+    @GetMapping("/events/upcoming/{city}/{country}")
+    public ResponseEntity<Set<EventDTO>> getUpcomingEventsByLocation(@PathVariable String city, @PathVariable String country) {
+        List<EventDTO> upcomingEvents = eventService.getUpcomingEvents();
+        Set<EventDTO> upcomingEventsByLocation = eventService.getUpcomingEventsByLocation(upcomingEvents, city, country);
+        if (upcomingEventsByLocation.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(upcomingEventsByLocation);
         }
     }
 
