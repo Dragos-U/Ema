@@ -20,6 +20,7 @@ import ro.itschool.ema.repositories.AddressRepository;
 import ro.itschool.ema.repositories.EventRepository;
 import ro.itschool.ema.repositories.OrganizerRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.*;
@@ -134,6 +135,22 @@ public class EventServiceImpl implements EventService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (Exception e) {
             throw new EventUpdateException("Failed to update event with id: " + id, e);
+        }
+    }
+    @Override
+    public Set<EventDTO> getEventsByDate(List<EventDTO> eventDTOList, LocalDate date) {
+        try {
+            Set<EventDTO> eventSet = eventDTOList
+                    .stream()
+                    .filter(event -> event.getEventDate().equals(date))
+                    .collect(Collectors.toSet());
+
+            if (eventSet.isEmpty()) {
+                throw new EventNotFoundException("Can't find events for specified date.");
+            }
+            return eventSet;
+        } catch (EventNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage(), e);
         }
     }
 
