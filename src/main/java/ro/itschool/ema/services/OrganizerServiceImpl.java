@@ -29,12 +29,16 @@ public class OrganizerServiceImpl implements OrganizerService {
 
     @Override
     public OrganizerDTO createOrganizer(OrganizerDTO organizerDTO) {
-        if (organizerRepository.existsByOrganizerName(organizerDTO.getOrganizerName()) && organizerRepository.existsByWebsite(organizerDTO.getWebsite())) {
+        if (organizerRepository.existsByOrganizerName(organizerDTO.getOrganizerName()) || organizerRepository.existsByWebsite(organizerDTO.getWebsite())) {
             throw new OrganizerCreateException("Organizer already exists.");
         }
         Organizer organizerEntity = objectMapper.convertValue(organizerDTO, Organizer.class);
-        Address addressEntity = addressRepository.save(organizerEntity.getAddress());
-        organizerEntity.setAddress(addressEntity);
+
+        if (organizerEntity.getAddress() != null) {
+            Address savedAddress = addressRepository.save(organizerEntity.getAddress());
+            organizerEntity.setAddress(savedAddress);
+        }
+
         Organizer organizerResponseEntity = organizerRepository.save(organizerEntity);
         return objectMapper.convertValue(organizerResponseEntity, OrganizerDTO.class);
     }
