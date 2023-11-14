@@ -1,6 +1,7 @@
 package ro.itschool.ema.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.itschool.ema.models.dtos.OrganizerDTO;
@@ -29,6 +30,6 @@ public class OrganizerController {
     }
     @PostMapping("/organizers")
     public ResponseEntity<OrganizerDTO> createOrganizer(@RequestBody @Valid OrganizerDTO organizerDTO) {
-        return ResponseEntity.ok(organizerService.createOrganizer(organizerDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(organizerService.createOrganizer(organizerDTO));
     }
 }
