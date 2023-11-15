@@ -63,20 +63,7 @@ class OrganizerControllerIntegrationTest {
     @Test
     @DisplayName("Get organizer list and return status code 200.")
     void whenGetOrganizerList() throws Exception {
-        AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setId(1L);
-        addressDTO.setStreet("Main Street 123");
-        addressDTO.setCity("City");
-        addressDTO.setPostalCode(011111);
-        addressDTO.setCountry("Country");
-
-        OrganizerDTO organizerDTO = new OrganizerDTO();
-        organizerDTO.setId(1L);
-        organizerDTO.setOrganizerName("Organizer");
-        organizerDTO.setDescription("Description");
-        organizerDTO.setWebsite("website.dns.com");
-        organizerDTO.setPhoneNumber("0712345678");
-        organizerDTO.setAddress(addressDTO);
+        OrganizerDTO organizerDTO = createOrganizerDTO();
 
         List<OrganizerDTO> organizerDTOList = List.of(organizerDTO);
         BDDMockito.given(organizerService.getAllOrganizers()).willReturn(organizerDTOList);
@@ -94,5 +81,26 @@ class OrganizerControllerIntegrationTest {
                 .andExpect(jsonPath("$[0].address.city").value(organizerDTO.getAddress().getCity()))
                 .andExpect(jsonPath("$[0].address.postalCode").value(organizerDTO.getAddress().getPostalCode()))
                 .andExpect(jsonPath("$[0].address.country").value(organizerDTO.getAddress().getCountry()));
+    }
+
+    private AddressDTO createAddressDTO() {
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setId(1L);
+        addressDTO.setStreet("Main Street 123");
+        addressDTO.setCity("City");
+        addressDTO.setPostalCode(011111);
+        addressDTO.setCountry("Country");
+        return addressDTO;
+    }
+
+    private OrganizerDTO createOrganizerDTO() {
+        OrganizerDTO organizerDTO = new OrganizerDTO();
+        organizerDTO.setId(1L);
+        organizerDTO.setOrganizerName("Organizer");
+        organizerDTO.setDescription("Description");
+        organizerDTO.setWebsite("website.dns.com");
+        organizerDTO.setPhoneNumber("0712345678");
+        organizerDTO.setAddress(createAddressDTO());
+        return organizerDTO;
     }
 }
