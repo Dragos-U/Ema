@@ -65,6 +65,8 @@ public class EventController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(upcomingEventsByLocation);
+        }
+    }
 
     @GetMapping("/events/filter/{date}")
     public ResponseEntity<Set<EventDTO>> getEventsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
