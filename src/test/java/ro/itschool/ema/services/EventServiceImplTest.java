@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceImplTest {
@@ -86,5 +86,18 @@ class EventServiceImplTest {
         assertEquals(2, upcomingEvents.size());
         assertTrue(upcomingEvents.contains(futureEventDTO1));
         assertTrue(upcomingEvents.contains(futureEventDTO2));
+    }
+
+    @Test
+    @DisplayName("Event successfully deleted.")
+    void deleteEventByIdTestShouldPass() {
+        Long eventId = 1L;
+        Event event = new Event();
+        event.setId(eventId);
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+
+        eventService.deleteEvent(eventId);
+
+        verify(eventRepository, times(1)).delete(event);
     }
 }

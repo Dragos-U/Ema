@@ -15,4 +15,5 @@ public interface EventService {
     List<EventDTO> getAllEvents();
     Set<EventDTO> getEventsByDate(List<EventDTO> eventDTOList, LocalDate date);
     EventDTO updateEvent(Long id, EventDTO eventDTO);
+    void deleteEvent(Long id);
 }

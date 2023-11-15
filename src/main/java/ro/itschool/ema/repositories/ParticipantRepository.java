@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
-
     boolean existsByName(String name);
     @Query("SELECT p FROM Participant p JOIN p.events e WHERE e.id = :eventId")
     List<Participant> findAllByEventId(@Param("eventId") Long eventId);
