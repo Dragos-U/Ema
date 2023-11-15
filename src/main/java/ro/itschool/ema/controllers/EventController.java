@@ -1,11 +1,14 @@
 package ro.itschool.ema.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.itschool.ema.models.dtos.EventDTO;
 import ro.itschool.ema.services.EventService;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,6 +65,15 @@ public class EventController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(upcomingEventsByLocation);
+
+    @GetMapping("/events/filter/{date}")
+    public ResponseEntity<Set<EventDTO>> getEventsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+        List<EventDTO> allEventsList = eventService.getAllEvents();
+        Set<EventDTO> eventsByDate = eventService.getEventsByDate(allEventsList, date);
+        if (eventsByDate.isEmpty()){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(eventsByDate);
         }
     }
 
