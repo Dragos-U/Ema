@@ -49,7 +49,6 @@ class StaffServiceImplTest {
     @Test
     @DisplayName("Staff created successfully.")
     void createStaffTestShouldPass() {
-        //given
         StaffDTO staffDTO = createStaffDTO();
         Organizer organizer = createOrganizer();
         Staff staffEntity = createStaffEntity();
