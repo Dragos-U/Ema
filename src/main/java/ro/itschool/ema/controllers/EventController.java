@@ -57,6 +57,15 @@ public class EventController {
         }
     }
 
+    @GetMapping("/events/upcoming/{city}/{country}")
+    public ResponseEntity<Set<EventDTO>> getUpcomingEventsByLocation(@PathVariable String city, @PathVariable String country) {
+        List<EventDTO> upcomingEvents = eventService.getUpcomingEvents();
+        Set<EventDTO> upcomingEventsByLocation = eventService.getUpcomingEventsByLocation(upcomingEvents, city, country);
+        if (upcomingEventsByLocation.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(upcomingEventsByLocation);
+
     @GetMapping("/events/filter/{date}")
     public ResponseEntity<Set<EventDTO>> getEventsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
         List<EventDTO> allEventsList = eventService.getAllEvents();
