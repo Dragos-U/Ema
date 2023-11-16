@@ -57,6 +57,16 @@ public class EventController {
         }
     }
 
+    @GetMapping("/events/sorted-by-date")
+    public ResponseEntity<Set<EventDTO>> sortEventsByDate(){
+        Set<EventDTO> eventDTOSortedByDates = eventService.sortEventsByDate();
+        if(eventDTOSortedByDates.isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else{
+            return ResponseEntity.ok(eventDTOSortedByDates);
+        }
+    }
+
     @GetMapping("/events/upcoming/{city}/{country}")
     public ResponseEntity<Set<EventDTO>> getUpcomingEventsByLocation(@PathVariable String city, @PathVariable String country) {
         List<EventDTO> upcomingEvents = eventService.getUpcomingEvents();
