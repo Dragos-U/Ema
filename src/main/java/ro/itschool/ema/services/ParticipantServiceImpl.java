@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ro.itschool.ema.exceptions.EventNotFoundException;
 import ro.itschool.ema.exceptions.ParticipantCreateException;
+import ro.itschool.ema.exceptions.ParticipantNotFoundException;
 import ro.itschool.ema.models.dtos.ParticipantDTO;
 import ro.itschool.ema.models.entities.Event;
 import ro.itschool.ema.models.entities.Participant;
@@ -54,9 +55,15 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Transactional
     public List<ParticipantDTO> getParticipantsForEvent(Long eventId) {
         List<Participant> participants = participantRepository.findAllByEventId(eventId);
-        return participants.stream()
-                .map(participant -> objectMapper.convertValue(participant, ParticipantDTO.class))
-                .collect(Collectors.toList());
+        if (eventRepository.existsById(eventId) && !participants.isEmpty()) {
+            return participants.stream()
+                    .map(participant -> objectMapper.convertValue(participant, ParticipantDTO.class))
+                    .collect(Collectors.toList());
+        } else if (eventRepository.existsById(eventId) && participants.isEmpty()) {
+            throw new ParticipantNotFoundException("No participants found for this event.");
+        } else {
+            throw new EventNotFoundException("Event not found.");
+        }
     }
 
     @Override

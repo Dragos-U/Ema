@@ -137,6 +137,7 @@ public class EventServiceImpl implements EventService {
             throw new EventUpdateException("Failed to update event with id: " + id, e);
         }
     }
+
     @Override
     public Set<EventDTO> getEventsByDate(List<EventDTO> eventDTOList, LocalDate date) {
         try {
@@ -144,7 +145,6 @@ public class EventServiceImpl implements EventService {
                     .stream()
                     .filter(event -> event.getEventDate().equals(date))
                     .collect(Collectors.toSet());
-
             if (eventSet.isEmpty()) {
                 throw new EventNotFoundException("Can't find events for specified date.");
             }
@@ -155,6 +155,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+
+    public void deleteEvent(Long id) {
+        try {
+            Event event = eventRepository.findById(id)
+                    .orElseThrow(() -> new EventNotFoundException("Event not found with id:" + id));
+            eventRepository.delete(event);
+        } catch (EventNotFoundException e){
+
     public Set<EventDTO> sortEventsByDate() {
         try{
             List<Event> events = eventRepository.findAll();
@@ -174,6 +182,7 @@ public class EventServiceImpl implements EventService {
             }
             return sortedByDates;
         } catch (EventNotFoundException e) {
+
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }
