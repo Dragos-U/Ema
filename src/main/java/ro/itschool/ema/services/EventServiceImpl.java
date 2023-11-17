@@ -161,7 +161,10 @@ public class EventServiceImpl implements EventService {
             Event event = eventRepository.findById(id)
                     .orElseThrow(() -> new EventNotFoundException("Event not found with id:" + id));
             eventRepository.delete(event);
-        } catch (EventNotFoundException e){
+        } catch (EventNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
+    }
 
     public Set<EventDTO> sortEventsByDate() {
         try{
