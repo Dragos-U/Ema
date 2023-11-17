@@ -155,12 +155,34 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+
     public void deleteEvent(Long id) {
         try {
             Event event = eventRepository.findById(id)
                     .orElseThrow(() -> new EventNotFoundException("Event not found with id:" + id));
             eventRepository.delete(event);
         } catch (EventNotFoundException e){
+
+    public Set<EventDTO> sortEventsByDate() {
+        try{
+            List<Event> events = eventRepository.findAll();
+            Set<EventDTO> eventDTOSet = new HashSet<>();
+
+            for (Event event : events) {
+                eventDTOSet.add(convertToDTO(event));
+            }
+
+            Set<EventDTO> sortedByDates = eventDTOSet
+                    .stream()
+                    .sorted(Comparator.comparing(EventDTO::getEventDate))
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
+
+            if(sortedByDates.isEmpty()){
+                throw new EventNotFoundException("Event dates cannot be sorted because they do not exist.");
+            }
+            return sortedByDates;
+        } catch (EventNotFoundException e) {
+
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }

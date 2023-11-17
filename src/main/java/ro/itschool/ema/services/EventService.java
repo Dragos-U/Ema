@@ -14,6 +14,7 @@ public interface EventService {
     Set<EventDTO> getUpcomingEventsByLocation(List<EventDTO> eventDTOList, String city, String country);
     List<EventDTO> getAllEvents();
     Set<EventDTO> getEventsByDate(List<EventDTO> eventDTOList, LocalDate date);
+    Set<EventDTO> sortEventsByDate();
     EventDTO updateEvent(Long id, EventDTO eventDTO);
     void deleteEvent(Long id);
 }

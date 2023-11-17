@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ParticipantServiceImplTest {
 
-
     @Mock
     private ParticipantRepository participantRepository;
 
