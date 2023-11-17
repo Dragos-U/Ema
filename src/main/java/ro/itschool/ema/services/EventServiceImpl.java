@@ -155,7 +155,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-
     public void deleteEvent(Long id) {
         try {
             Event event = eventRepository.findById(id)
@@ -166,6 +165,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
     public Set<EventDTO> sortEventsByDate() {
         try{
             List<Event> events = eventRepository.findAll();
