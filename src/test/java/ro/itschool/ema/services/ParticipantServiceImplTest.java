@@ -88,36 +88,6 @@ class ParticipantServiceImplTest {
     }
 
     @Test
-    @Disabled
-    @DisplayName("Error occurs when participant has a null address.")
-    void participantAddressIsNull() {
-        // Given
-        Long eventId = 1L;
-        Event event = new Event(); // Assuming you have a default constructor
-
-        ParticipantDTO participantDTO = new ParticipantDTO();
-        participantDTO.setId(1L);
-        participantDTO.setName("Dumitru Alex");
-        participantDTO.setEmail("dum.alex@gmail.com");
-        participantDTO.setPhoneNumber("0471-562-921");
-
-        Participant participant = new Participant();
-        participant.setName(participantDTO.getName());
-        participant.setEmail(participantDTO.getEmail());
-        participant.setPhoneNumber(participantDTO.getPhoneNumber());
-        participant.setAddress(null);
-
-        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
-        when(objectMapper.convertValue(participantDTO, Participant.class)).thenReturn(participant);
-
-        // When
-        ParticipantDTO savedParticipantDTO = participantServiceImpl.createAndAddParticipantToEvent(eventId, participantDTO);
-
-        // Then
-        assertNull(savedParticipantDTO.getAddress(), "Address should be null in the returned ParticipantDTO");
-    }
-
-    @Test
     @DisplayName("Event not found exception is thrown.")
     void eventNotFoundTestThrowsException() {
         Long eventId = 1L;
